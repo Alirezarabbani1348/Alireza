@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قطب‌نما | باشگاه آزمون‌های رغبت‌سنجی و شخصیت‌شناسی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FAF7F1; --paper:#FFFFFF; --ink:#1B2333; --muted:#6B7280;
+  --gold:#C9A227; --teal:#1F6F6B; --coral:#E2643B; --line:#E7E1D4;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Vazirmatn',sans-serif;min-height:100vh}
+.mono{font-family:'Space Mono',monospace}
+.wrap{max-width:860px;margin:0 auto;padding:24px 20px 90px}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(250,247,241,.92);backdrop-filter:blur(6px);z-index:50;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;cursor:pointer}
+.compass{width:34px;height:34px;position:relative;flex:none}
+.compass svg{width:100%;height:100%;display:block}
+.needle{transform-origin:50% 50%;transition:transform 1.1s cubic-bezier(.34,1.56,.64,1)}
+.navlinks{display:flex;gap:8px;align-items:center}
+.navlinks button{background:none;border:1.5px solid var(--line);border-radius:10px;padding:8px 14px;font-family:inherit;font-size:13.5px;cursor:pointer;font-weight:600;color:var(--ink)}
+.navlinks button:hover{border-color:var(--teal)}
+.progress-wrap{flex:1;max-width:280px;height:6px;background:var(--line);border-radius:6px;overflow:hidden;display:none}
+.progress-wrap.show{display:block}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--teal),var(--gold));transition:width .5s ease}
+.q-count{font-size:12px;color:var(--muted);white-space:nowrap;display:none}
+.q-count.show{display:inline}
+.screen{animation:fadeIn .5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.hidden{display:none !important}
+.hero{padding:44px 0 14px;text-align:center}
+.eyebrow{color:var(--teal);font-weight:700;letter-spacing:.12em;font-size:12.5px;text-transform:uppercase}
+h1.title{font-size:clamp(28px,5vw,42px);font-weight:800;margin:14px 0 10px;line-height:1.3}
+.title .accent{color:var(--coral)}
+.lead{color:var(--muted);font-size:16px;line-height:2;max-width:600px;margin:0 auto 26px}
+.cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:15px;padding:13px 26px;border-radius:12px;transition:transform .18s ease,box-shadow .18s ease}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(27,35,51,.22)}
+.btn-green{background:#1B8A5A;color:#fff}
+.btn-green:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(27,138,90,.28)}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:var(--ink)}
+.btn-gold{background:var(--gold);color:#2b2205}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(201,162,39,.3)}
+.btn-sm{padding:8px 14px;font-size:13px;border-radius:9px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:26px}
+
+/* category tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:26px 0 22px}
+.tab{padding:8px 16px;border-radius:20px;border:1.5px solid var(--line);cursor:pointer;font-size:13.5px;font-weight:600;background:#fff;transition:all .15s ease}
+.tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* test grid */
+.test-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media(max-width:640px){.test-grid{grid-template-columns:1fr}}
+.test-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;text-align:right}
+.test-card:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(27,35,51,.1)}
+.test-card .ic{font-size:30px;margin-bottom:10px;display:block}
+.test-card h3{margin:0 0 6px;font-size:17px}
+.test-card p{margin:0 0 10px;color:var(--muted);font-size:13.5px;line-height:1.8}
+.test-card .meta{font-size:12px;color:var(--gold);font-weight:700}
+.test-card.add{border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--muted);gap:8px}
+.test-card.add:hover{border-color:var(--teal);color:var(--teal)}
+
+/* intro & question shared */
+.intro-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:18px}
+.intro-title{font-size:23px;font-weight:800;margin:0 0 14px}
+.intro-text{color:var(--muted);font-size:16px;line-height:2.1;margin-bottom:26px;white-space:pre-line}
+.q-card{padding:32px 28px}
+.q-index{font-family:'Space Mono',monospace;color:var(--gold);font-size:12.5px;margin-bottom:10px}
+.q-text{font-size:20px;font-weight:700;line-height:1.75;margin-bottom:24px;min-height:60px}
+.options{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;transition:border-color .15s ease,background .15s ease,transform .15s ease;animation:slideIn .4s ease backwards}
+.opt:nth-child(1){animation-delay:.03s}.opt:nth-child(2){animation-delay:.07s}.opt:nth-child(3){animation-delay:.11s}.opt:nth-child(4){animation-delay:.15s}.opt:nth-child(5){animation-delay:.19s}
+@keyframes slideIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
+.opt:hover{border-color:var(--teal);background:#F4FAF9}
+.opt.sel{border-color:var(--teal);background:#EAF6F4;box-shadow:0 0 0 3px rgba(31,111,107,.12)}
+.opt .dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--line);flex:none;transition:all .15s ease}
+.opt.sel .dot{border-color:var(--teal);background:var(--teal);box-shadow:inset 0 0 0 3px #fff}
+.auto-hint{text-align:center;color:var(--muted);font-size:12px;margin-top:14px}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
+
+/* results */
+.result-top{text-align:center;padding:30px 0 8px}
+.type-badge{width:84px;height:84px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:38px;margin:0 auto 16px;animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.result-top h2{font-size:24px;margin:0 0 6px}
+.result-top .sub{color:var(--muted);font-size:14.5px}
+.bars{display:flex;flex-direction:column;gap:14px;margin:26px 0}
+.bar-row{display:flex;align-items:center;gap:14px}
+.bar-label{width:120px;flex:none;font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px}
+.bar-track{flex:1;height:14px;background:var(--line);border-radius:8px;overflow:hidden}
+.bar-fill{height:100%;width:0%;border-radius:8px;transition:width 1.1s cubic-bezier(.22,1,.36,1)}
+.bar-pct{width:44px;flex:none;text-align:left;font-family:'Space Mono',monospace;font-size:13px;color:var(--muted)}
+.lock-panel{margin-top:30px;border:1.5px dashed var(--gold);border-radius:16px;padding:24px;background:linear-gradient(180deg,rgba(201,162,39,.06),transparent)}
+.lock-title{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16.5px;margin-bottom:8px}
+.lock-list{color:var(--muted);font-size:14px;line-height:2;margin:0 0 18px;padding-right:20px}
+.code-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.code-row input{flex:1;min-width:180px;padding:12px 16px;border-radius:10px;border:1.5px solid var(--line);font-family:inherit;font-size:14.5px;background:#fff}
+.code-row input:focus{outline:none;border-color:var(--gold)}
+.toast{margin-top:12px;font-size:13.5px;font-weight:600;padding:10px 14px;border-radius:10px;display:none}
+.toast.show{display:block;animation:fadeIn .3s ease}
+.toast.ok{background:#E9F7EF;color:#1B8A5A}
+.toast.err{background:#FDEEEA;color:#C0392B}
+.premium-body{display:none;margin-top:10px}
+.premium-body.show{display:block;animation:fadeIn .5s ease}
+.career-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.career-tag{background:#fff;border:1px solid var(--line);padding:6px 12px;border-radius:20px;font-size:12.5px}
+.type-block{border-top:1px solid var(--line);padding:16px 0}
+.type-block h4{margin:0 0 6px;font-size:15.5px;display:flex;align-items:center;gap:8px}
+.type-block p{margin:0 0 4px;color:var(--muted);font-size:13.5px;line-height:1.9}
+
+/* interest code badges */
+.code-badges{display:flex;gap:10px;justify-content:center;margin:14px 0 6px}
+.code-chip{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#fff;animation:pop .45s cubic-bezier(.34,1.56,.64,1) backwards}
+.code-chip:nth-child(1){animation-delay:.05s}.code-chip:nth-child(2){animation-delay:.15s}.code-chip:nth-child(3){animation-delay:.25s}
+
+/* radar */
+.radar-wrap{display:flex;justify-content:center;margin-bottom:6px}
+
+/* free/premium compare cards */
+.compare-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
+@media(max-width:640px){.compare-wrap{grid-template-columns:1fr}}
+.compare-card{border:1.5px solid var(--line);border-radius:16px;padding:22px;position:relative;background:#fff}
+.compare-card.premium{border-color:var(--gold);background:linear-gradient(180deg,rgba(201,162,39,.07),#fff)}
+.cc-badge{display:inline-block;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:20px;background:var(--line);color:var(--muted);margin-bottom:10px}
+.cc-badge.gold{background:var(--gold);color:#2b2205}
+.compare-card h4{margin:0 0 12px;font-size:16.5px}
+.compare-card ul{margin:0 0 16px;padding-right:18px;color:var(--muted);font-size:13.5px;line-height:2}
+.compare-card ul li.on{color:var(--ink)}
+
+/* ai interpretation */
+.ai-box{border:1.5px solid var(--line);border-radius:14px;padding:20px;background:#FCFBF8;margin-bottom:20px}
+.ai-box h4{margin:0 0 10px;display:flex;align-items:center;gap:8px;font-size:15.5px}
+.ai-loading{color:var(--muted);font-size:14px;display:flex;align-items:center;gap:10px}
+.spinner{width:16px;height:16px;border:2.5px solid var(--line);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-text{font-size:14.5px;line-height:2.1;color:var(--ink)}
+
+/* admin form */
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-weight:700;font-size:13.5px;margin-bottom:6px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-family:inherit;font-size:14.5px;background:#fff}
+.form-group textarea{min-height:90px;resize:vertical}
+.form-group .hint{color:var(--muted);font-size:12px;margin-top:5px;line-height:1.7}
+.section-block{border:1.5px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;background:#FCFAF6}
+.section-block .sb-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.row2{grid-template-columns:1fr}}
+.notice{background:#FDF3E3;border:1px solid #EED9A8;border-radius:12px;padding:14px 16px;font-size:13.5px;color:#6B5A1C;margin-bottom:18px;line-height:1.8}
+
+footer.credit{text-align:center;color:var(--muted);font-size:12.5px;margin-top:44px}
+.loading{text-align:center;color:var(--muted);padding:60px 0}
+@media(max-width:640px){.q-card{padding:22px 16px}.q-text{font-size:17.5px}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand" onclick="goHome()">
+    <span class="compass"><svg viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="46" fill="none" stroke="#1B2333" stroke-width="3"/>
+      <circle cx="50" cy="50" r="3" fill="#1B2333"/>
+      <g class="needle" id="needle"><polygon points="50,10 56,50 50,50" fill="#E2643B"/><polygon points="50,90 44,50 50,50" fill="#1B2333"/></g>
+    </svg></span>
+    قطب‌نما
+  </div>
+  <div class="progress-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="q-count mono" id="qCount"></div>
+  <div class="navlinks" id="navlinks">
+    <button onclick="goHome()">📂 آزمون‌ها</button>
+    <button onclick="openAdmin()">➕ افزودن آزمون</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="screen hidden" id="screen-loading"><div class="loading">در حال آماده‌سازی... 🧭</div></section>
+
+  <!-- HOME -->
+  <section class="screen hidden" id="screen-home">
+    <div class="hero">
+      <div class="eyebrow">باشگاه آزمون‌های خودشناسی</div>
+      <h1 class="title">ببین <span class="accent">دنیای ذهنت</span> چه شکلیه 🧠✨</h1>
+      <p class="lead">یه سری آزمون باحال برای شناخت علاقه‌ها، شخصیت و مسیر تحصیلی-شغلیت. راحت باش، جواب درست و غلط نداره، فقط با خودت رو راست باش 😉</p>
+    </div>
+    <div class="tabs" id="tabsWrap"></div>
+    <div class="test-grid" id="testGrid"></div>
+    <footer class="credit">محتوای هر آزمون توسط تیم قطب‌نما اضافه می‌شود؛ آزمون‌های جدید در بخش «افزودن آزمون» قابل ثبت‌اند.</footer>
+  </section>
+
+  <!-- ADMIN -->
+  <section class="screen hidden" id="screen-admin">
+    <div class="hero" style="padding-top:20px">
+      <div class="eyebrow">پنل مدیریت محتوا</div>
+      <h1 class="title" style="font-size:30px">یه آزمون تازه بساز 🛠️</h1>
+    </div>
+    <div class="notice">📢 توجه: هر آزمونی که این‌جا ثبت کنی برای همه‌ی بازدیدکننده‌های سایت قابل مشاهده می‌شه (فضای اشتراکی). پاسخ‌ها و نتیجه‌ی هر کاربر فقط برای خودش می‌مونه.</div>
+    <div class="card">
+      <div class="form-group"><label>عنوان آزمون</label><input id="af-title" placeholder="مثلاً: آزمون تیپ‌های شخصیتی"></div>
+      <div class="row2">
+        <div class="form-group"><label>ایموجی/آیکون</label><input id="af-icon" placeholder="📝" maxlength="4"></div>
+        <div class="form-group"><label>دسته‌بندی</label><input id="af-cat" placeholder="مثلاً: شخصیت‌شناسی"></div>
+      </div>
+      <div class="form-group"><label>توضیح کوتاه (روی کارت نمایش داده می‌شه)</label><textarea id="af-desc" style="min-height:50px" placeholder="یک یا دو جمله درباره‌ی این آزمون"></textarea></div>
+      <div class="form-group"><label>متن قبل از شروع آزمون</label><textarea id="af-disclaimer" placeholder="مثلاً: قبل از شروع بخون..."></textarea></div>
+
+      <div id="sectionsWrap"></div>
+      <button class="btn btn-ghost btn-sm" onclick="addSectionBlock()">+ افزودن بخش جدید</button>
+
+      <div style="margin-top:24px;text-align:center">
+        <button class="btn btn-primary" onclick="saveNewTest()">🚀 ذخیره و انتشار آزمون</button>
+      </div>
+      <div class="toast" id="adminToast"></div>
+    </div>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <section class="screen hidden" id="screen-disclaimer">
+    <div class="card" style="max-width:560px;margin:40px auto;text-align:center">
+      <div class="intro-icon" style="background:#FDEEEA;margin:0 auto 18px" id="dIcon">🧭</div>
+      <h2 class="intro-title" id="dTitle">قبل از شروع</h2>
+      <p class="intro-text" id="dText"></p>
+      <button class="btn btn-green" onclick="startSection(0)">باشه، فهمیدم بزن بریم! 🚀</button>
+    </div>
+  </section>
+
+  <!-- SECTION INTRO -->
+  <section class="screen hidden" id="screen-sectionIntro">
+    <div class="card" style="max-width:600px;margin:40px auto">
+      <div class="intro-icon" id="siIcon">💼</div>
+      <h2 class="intro-title" id="siTitle"></h2>
+      <p class="intro-text" id="siText"></p>
+      <button class="btn btn-green" id="siBtn">باشه فهمیدم ✅</button>
+    </div>
+  </section>
+
+  <!-- QUESTION -->
+  <section class="screen hidden" id="screen-question">
+    <div class="card q-card">
+      <div class="q-index mono" id="qIndex"></div>
+      <div class="q-text" id="qText"></div>
+      <div class="options" id="qOptions"></div>
+      <div class="auto-hint">یه گزینه بزن، خودکار می‌ریم سؤال بعدی ⏩</div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" id="btnPrev" onclick="prevQuestion()">◄ قبلی</button>
+        <button class="btn btn-primary" id="btnNext" onclick="nextQuestion()" disabled>بعدی ►</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- DONE -->
+  <section class="screen hidden" id="screen-done">
+    <div class="card" style="max-width:520px;margin:60px auto;text-align:center">
+      <div class="intro-icon" style="background:#EAF6F4;margin:0 auto 18px">🎉</div>
+      <h2 class="intro-title">تمومه! دمت گرم 👏</h2>
+      <p class="intro-text">به همه‌ی سؤالا جواب دادی. حالا وقتشه ببینیم ذهنت کجاها می‌زنه 😄</p>
+      <button class="btn btn-primary" onclick="showResults()">مشاهده‌ی نتیجه 🔮</button>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="screen hidden" id="screen-results">
+    <div class="result-top">
+      <div class="type-badge" id="topBadge"></div>
+      <h2 id="topName"></h2>
+      <div class="sub" id="topSub">این‌طوری از پاسخ‌هات محاسبه شد 📊</div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">نمودار نمره‌هات 📈</h3>
+      <div class="bars" id="barsWrap"></div>
+      <div class="lock-panel" id="lockPanel">
+        <div class="lock-title">🔓 گزارش پیشرفته + دانلود PDF</div>
+        <ul class="lock-list">
+          <li>تفسیر کامل هر حوزه به‌ترتیب نمره‌ی تو</li>
+          <li>پیشنهادهای مرتبط بر اساس ترکیب نمره‌هات</li>
+          <li>خروجی PDF قابل ذخیره و چاپ از کل گزارش</li>
+        </ul>
+        <div class="code-row">
+          <input type="text" id="codeInput" placeholder="کد تخفیف داری؟ بریز اینجا 😉">
+          <button class="btn btn-gold" onclick="applyCode()">فعال‌سازی</button>
+          <button class="btn btn-ghost" onclick="fakePurchase()">خرید نسخه‌ی پیشرفته</button>
+        </div>
+        <div class="toast" id="codeToast"></div>
+      </div>
+      <div class="premium-body" id="premiumBody">
+        <h3>تفسیر کامل نتیجه‌ت</h3>
+        <div id="typeBlocks"></div>
+        <div style="text-align:center;margin-top:20px">
+          <button class="btn btn-primary" onclick="downloadPdf()">دانلود PDF نتیجه 📄</button>
+        </div>
+      </div>
+    </div>
+    <footer class="credit">این آزمون بر پایه‌ی مدل رغبت‌سنجی شغلی هالند (RIASEC) طراحی شده.</footer>
+  </section>
+
+</div>
+<div id="printArea" style="display:none"></div>
+
+<script>
+/* ================= palette for auto-assigned dims ================= */
+const PALETTE = ['#8B5E3C','#1F6F6B','#E2643B','#2E6E9E','#C9A227','#5B6472','#7A5CC0','#3D8B5F'];
+
+/* ================= built-in RIASEC test (original content) ================= */
+const CATS = {
+  R:{name:'واقع‌گرا',icon:'🔧',color:'#8B5E3C',angle:0,desc:'اهل عمل و کار دستی‌ای! دوست داری به‌جای حرف زدن درباره‌ی ایده‌ها، واقعاً یه چیزی بسازی، تعمیر کنی یا با ابزار و ماشین‌آلات ور بری.'},
+  I:{name:'پژوهشگر',icon:'🔬',color:'#1F6F6B',angle:60,desc:'کنجکاو و تحلیل‌گری! حل مسئله‌های پیچیده، کندوکاو توی داده‌ها و فهمیدن «چرا» این‌طوریه، حسابی حال‌ت رو خوب می‌کنه.'},
+  A:{name:'هنری',icon:'🎨',color:'#E2643B',angle:120,desc:'خلاق و اهل بیانی! دوست داری از طریق نوشتن، تصویر، موسیقی یا طراحی حرفت رو بزنی، بدون این‌که قالب از پیش تعیین‌شده اذیتت کنه.'},
+  S:{name:'اجتماعی',icon:'🤝',color:'#2E6E9E',angle:180,desc:'کمک‌کننده و همدلی! کمک به دیگران، آموزش دادن و ارتباط انسانی برات انرژی‌بخشه.'},
+  E:{name:'مقاوله‌گر',icon:'📈',color:'#C9A227',angle:240,desc:'پرانرژی و رهبری‌طلب! متقاعد کردن، ریسک کردن و پیش‌بردن یه پروژه یا تجارت حسابی به دلت می‌شینه.'},
+  C:{name:'سازمانی',icon:'📋',color:'#5B6472',angle:300,desc:'منظم و دقیقی! کار با اعداد، داده و رویه‌های مشخص برات راحت و لذت‌بخشه.'}
+};
+const OCCUPATIONS = {
+ R:['مکانیک خودرو (تعمیر و سرویس موتور و قطعات ماشین)','برق‌کار ساختمان (سیم‌کشی و تعمیر برق ساختمان)','نجار حرفه‌ای (ساخت و تراش وسایل چوبی)','خلبان هواپیمای باری (پرواز روی مسیرهای طولانی حمل بار)','تکنسین تعمیر لوازم خانگی (سر و کله زدن با یخچال و ماشین‌لباسشویی خراب)','لوله‌کش ساختمانی (نصب و تعمیر آب و فاضلاب)','راننده کامیون سنگین (جابه‌جایی بار روی جاده‌های دور)','جوشکار صنعتی (اتصال فلزات با جوش)','کشاورز و باغدار (کاشت، داشت و برداشت محصول)','تعمیرکار موتورسیکلت (سرویس و تعمیر موتور)'],
+ I:['زیست‌شناس دریایی (مطالعه‌ی موجودات و اکوسیستم دریا)','اخترفیزیک‌دان (بررسی ستاره‌ها و کهکشان‌ها)','محقق داروسازی (کشف ترکیبات دارویی جدید)','تحلیل‌گر داده (پیدا کردن الگو از دل اعداد)','ژنتیک‌شناس (بررسی ژن‌ها و صفات ارثی)','شیمی‌دان صنعتی (بهبود فرآیندهای شیمیایی کارخانه)','باستان‌شناس (کشف آثار تمدن‌های گذشته)','زمین‌شناس نفت (بررسی لایه‌های زمین برای نفت)','متخصص هوش مصنوعی (طراحی الگوریتم‌های یادگیرنده)','اپیدمیولوژیست (ردیابی شیوع بیماری‌ها)'],
+ A:['طراح گرافیک (ساخت تصویر و طرح بصری برای برند)','آهنگساز موسیقی فیلم (ساخت موسیقی متناسب با حس صحنه)','نویسنده‌ی رمان (خلق داستان و دنیای تخیلی)','عکاس مستند (ثبت لحظه‌های واقعی زندگی)','طراح لباس (طراحی و دوخت مدل‌های تازه)','کارگردان تئاتر (هدایت بازیگرها روی صحنه)','مجسمه‌ساز (ساخت اثر هنری سه‌بعدی)','طراح بازی‌های ویدیویی (ساخت دنیا و قوانین بازی)','خوش‌نویس (نوشتن هنرمندانه‌ی حروف)','انیماتور (به حرکت درآوردن تصاویر و شخصیت‌ها)'],
+ S:['مشاور تحصیلی (کمک به انتخاب مسیر تحصیلی درست)','پرستار بخش کودکان (مراقبت از بچه‌های بیمار)','مددکار اجتماعی (کمک به حل مشکلات زندگی افراد)','معلم دوره‌ی ابتدایی (آموزش پایه به بچه‌ها)','روان‌شناس بالینی (کمک به حل مسائل روانی)','مربی کودکان استثنایی (آموزش ویژه به نیازهای خاص)','کارشناس توان‌بخشی (بازگرداندن توانایی جسمی افراد)','راهنمای تور گردشگری (همراهی مسافرها در سفر)','مشاور خانواده (کمک به بهبود روابط خانوادگی)','آموزشیار داوطلب (آموزش رایگان به نیازمندان)'],
+ E:['مدیر فروش منطقه‌ای (رهبری تیم فروش)','بنیان‌گذار استارتاپ (ساخت کسب‌وکار از صفر)','معامله‌گر بورس (خرید و فروش سهام)','مدیر بازاریابی (طراحی استراتژی فروش)','وکیل دعاوی تجاری (دفاع از حقوق شرکت‌ها)','نماینده‌ی بیمه (فروش و مشاوره‌ی بیمه)','مدیر هتل (اداره‌ی روزانه‌ی هتل)','فعال سیاسی محلی (تأثیرگذاری روی تصمیمات محلی)','مذاکره‌کننده‌ی قراردادها (چونه‌زنی برای بهترین قرارداد)','مدیر برند (ساخت هویت یک برند)'],
+ C:['حسابدار رسمی (ثبت و بررسی دقیق حساب‌ها)','تحلیل‌گر مالی (پیش‌بینی سود و زیان)','منشی اداری (هماهنگی کارهای روزمره‌ی دفتر)','ممیز مالیاتی (بررسی اظهارنامه‌های مالیاتی)','متصدی بایگانی (سازمان‌دهی اسناد و پرونده‌ها)','برنامه‌ریز تدارکات (هماهنگی خرید و تأمین کالا)','کارمند بانک (انجام تراکنش‌های مالی)','ویراستار متن (اصلاح دقیق متن قبل از انتشار)','کارشناس کنترل کیفیت (چک کردن استاندارد محصولات)','کارشناس امور بیمه (بررسی و صدور خسارت)']
+};
+const SUBJECTS = {R:['کارگاه فنی و حرفه‌ای','نقشه‌کشی صنعتی','کارگاه برق','مکانیک خودرو','کشاورزی و باغبانی'],I:['زیست‌شناسی','فیزیک','شیمی','نجوم','آمار و احتمال'],A:['هنرهای تجسمی','ادبیات فارسی','موسیقی','طراحی گرافیک','نمایش و تئاتر'],S:['علوم تربیتی','روان‌شناسی','جامعه‌شناسی','مطالعات خانواده','آموزش بهداشت'],E:['اقتصاد','مدیریت بازرگانی','حقوق تجارت','بازاریابی','علوم سیاسی'],C:['حسابداری','ریاضیات کاربردی','کامپیوتر و نرم‌افزار اداری','آمار تجاری','مدیریت دفتر']};
+const LEISURE = {R:['تعمیر وسایل خونه','کوهنوردی و طبیعت‌گردی','باغبانی','ساخت وسایل چوبی','دوچرخه‌سواری کوهستان'],I:['خوندن مقاله‌های علمی','حل معماهای منطقی','رفتن به موزه‌ی علوم','ستاره‌شناسی آماتور','آزمایش‌های خونگی شیمی'],A:['نقاشی و طراحی','نواختن یه ساز','نوشتن داستان کوتاه','عکاسی خلاقانه','طراحی دکور'],S:['داوطلب شدن در خیریه','آموزش دادن به بقیه','سازمان‌دهی جمع دوستانه','گوش دادن به مشکلات دیگران','مشارکت توی گروه‌های حمایتی'],E:['راه‌اندازی یه کسب‌وکار کوچیک','سخنرانی جلوی جمع','مذاکره برای یه معامله','برگزاری یه رویداد','شرکت توی مناظره'],C:['سازمان‌دهی وسایل و فایل‌ها','برنامه‌ریزی بودجه‌ی شخصی','مرتب کردن کتابخونه','پیگیری حساب‌ها','تنظیم برنامه‌ی هفتگی']};
+const PEOPLE = {R:['افرادی که با دست‌هاشون چیزی می‌سازن','افرادی که تو فضای باز کار می‌کنن','افرادی که با ماشین‌آلات سروکار دارن'],I:['افرادی که همیشه در حال یادگیری‌ان','دانشمندا و پژوهشگرا','افرادی که به داده و شواهد اهمیت می‌دن'],A:['آدمای خلاق و رویاپرداز','هنرمندا و نوازنده‌ها','افرادی که خلاف عرف فکر می‌کنن'],S:['افرادی که به بقیه کمک می‌کنن','معلما و مربی‌ها','افرادی که همدلی بالایی دارن'],E:['آدمای بلندپرواز تو کسب‌وکار','رهبرا و آدمای تأثیرگذار','افرادی که ریسک‌پذیرن'],C:['آدمای منظم و دقیق','افرادی که به قوانین پایبندن','افرادی که برنامه‌ریزی رو دوست دارن']};
+const TRAITS = {R:['ترجیح می‌دم به‌جای حرف زدن، کاری رو عملاً انجام بدم','با ابزار و وسایل مکانیکی راحتم','دوست دارم تو فضای باز و طبیعت وقت بگذرونم'],I:['دوست دارم دلیل اتفاقات رو کشف کنم','از حل مسئله‌های پیچیده لذت می‌برم','کنجکاوی علمی زیادی دارم'],A:['تخیل قوی‌ای دارم','دوست دارم کارا رو یه‌جور متفاوت انجام بدم','بیان احساسات از طریق هنر برام لذت‌بخشه'],S:['کمک کردن به دیگران بهم انرژی می‌ده','شنونده‌ی خوبی برای مشکلات دیگرانم','همکاری تو گروه رو به کار تنها ترجیح می‌دم'],E:['دوست دارم بقیه رو متقاعد کنم','از رهبری کردن یه تیم لذت می‌برم','ریسک کردن برام جذاب‌تر از امنیته'],C:['کارامو با نظم و ترتیب دقیق انجام می‌دم','پیگیری جزئیات برام آسونه','ترجیح می‌دم دستورالعمل مشخص داشته باشم']};
+
+const ORDER=['R','I','A','S','E','C'];
+function interleave(dataObj){
+  const items=[]; const max=Math.max(...ORDER.map(c=>dataObj[c].length));
+  for(let i=0;i<max;i++){ ORDER.forEach(cat=>{ if(dataObj[cat][i]!==undefined) items.push({tag:cat,text:dataObj[cat][i]}); }); }
+  return items;
+}
+function buildDefaultTest(){
+  return {
+    id:'riasec-default',
+    title:'آزمون رغبت‌سنجی تحصیلی و شغلی',
+    icon:'🧭',
+    category:'تحصیلی-شغلی',
+    desc:'۱۵۶ سؤال که نشونت می‌ده به کدوم حوزه‌های شغلی و درسی بیشتر علاقه داری.',
+    disclaimer:'تو این آزمون به این فکر نکن که تو هر شغل موفق می‌شی یا چقدر درآمد داره 💰. فقط صادقانه بگو دوست داری اون کارو انجام بدی یا نه. جواب درست و غلط نداره، فقط با اولین حسی که بهت دست می‌ده جلو برو 😄',
+    dims:CATS,
+    sections:[
+      {title:'بخش ۱ — مشاغل 💼',icon:'💼',intro:'میزان علاقه‌ت به هر شغل رو مشخص کن. به موفقیت یا درآمدش فکر نکن، فقط بگو دوست داری انجامش بدی یا نه 🙂',scaleType:'interest5',items:interleave(OCCUPATIONS)},
+      {title:'بخش ۲ — موضوعات درسی 📚',icon:'📚',intro:'مثل قبل، علاقه‌ت به هر موضوع درسی رو بگو؛ چه قبلاً خوندیش چه نه 📖',scaleType:'interest5',items:interleave(SUBJECTS)},
+      {title:'بخش ۳ — اوقات فراغت 🎯',icon:'🎯',intro:'نسبت به این فعالیت‌ها به‌عنوان یه سرگرمی چه احساسی داری؟',scaleType:'interest5',items:interleave(LEISURE)},
+      {title:'بخش ۴ — همنشینی با آدما 🧑‍🤝‍🧑',icon:'🧑‍🤝‍🧑',intro:'همنشینی روزمره با هر گروه از این آدما چه حسی بهت می‌ده؟ اولین چیزی که به ذهنت می‌رسه رو انتخاب کن.',scaleType:'interest5',items:interleave(PEOPLE)},
+      {title:'بخش ۵ — ویژگی‌های شخصیتی 🧬',icon:'🧬',intro:'با هر جمله موافقی یا مخالف؟ نزدیک‌ترین گزینه به خودت رو بزن.',scaleType:'agree5',items:interleave(TRAITS)}
+    ]
+  };
+}
+
+/* ================= scale definitions ================= */
+const SCALES = {
+  interest5:['خیلی دوست دارم 😍','دوست دارم 🙂','فرقی نمی‌کنه 😐','دوست ندارم 🙁','اصلاً دوست ندارم 😩'],
+  agree5:['کاملاً موافقم 💯','موافقم 👍','فرقی نمی‌کنه 😐','مخالفم 👎','کاملاً مخالفم ❌'],
+  yesno:['بله ✅','خیر ❌'],
+};
+function labelsFor(section){
+  if(section.scaleType==='custom') return section.customLabels;
+  return SCALES[section.scaleType]||SCALES.interest5;
+}
+
+/* ================= storage helpers ================= */
+async function loadIndex(){
+  try{
+    const r = await window.storage.get('test-index', true);
+    return r ? JSON.parse(r.value) : null;
+  }catch(e){ return null; }
+}
+async function saveIndex(idx){
+  try{ await window.storage.set('test-index', JSON.stringify(idx), true); }catch(e){ console.error('storage error',e); }
+}
+async function loadTest(id){
+  if(id==='riasec-default') return buildDefaultTest();
+  try{
+    const r = await window.storage.get('test:'+id, true);
+    return r ? JSON.parse(r.value) : null;
+  }catch(e){ return null; }
+}
+async function saveTest(test){
+  try{ await window.storage.set('test:'+test.id, JSON.stringify(test), true); }catch(e){ console.error('storage error',e); }
+}
+
+let TEST_INDEX = [];
+async function initHome(){
+  goto('loading');
+  let idx = await loadIndex();
+  if(!idx || !idx.length){
+    idx = [{id:'riasec-default',title:'آزمون رغبت‌سنجی تحصیلی و شغلی',icon:'🧭',category:'تحصیلی-شغلی',desc:'۱۵۶ سؤال برای کشف علاقه‌ی تحصیلی و شغلیت 🎓',count:156}];
+    await saveIndex(idx);
+  }
+  TEST_INDEX = idx;
+  renderHome();
+}
+let activeTab='همه';
+function renderHome(){
+  const cats=['همه',...new Set(TEST_INDEX.map(t=>t.category))];
+  const tabsWrap=document.getElementById('tabsWrap');
+  tabsWrap.innerHTML='';
+  cats.forEach(c=>{
+    const b=document.createElement('div'); b.className='tab'+(c===activeTab?' active':'');
+    b.textContent=c; b.onclick=()=>{activeTab=c; renderHome();};
+    tabsWrap.appendChild(b);
+  });
+  const grid=document.getElementById('testGrid'); grid.innerHTML='';
+  TEST_INDEX.filter(t=>activeTab==='همه'||t.category===activeTab).forEach(t=>{
+    const card=document.createElement('div'); card.className='test-card';
+    card.innerHTML=`<span class="ic">${t.icon}</span><h3>${t.title}</h3><p>${t.desc||''}</p><div class="meta">${t.category} · ${toFa(t.count||'?')} سؤال</div>`;
+    card.onclick=()=>launchTest(t.id);
+    grid.appendChild(card);
+  });
+  const addCard=document.createElement('div'); addCard.className='test-card add';
+  addCard.innerHTML=`<div style="font-size:26px">➕</div><div>افزودن آزمون جدید</div>`;
+  addCard.onclick=openAdmin;
+  grid.appendChild(addCard);
+  goto('home');
+}
+function goHome(){ initHome(); }
+
+/* ================= quiz engine (generic) ================= */
+let CUR_TEST=null, curSection=0, curQ=0, answers=[], advanceTimer=null;
+async function launchTest(id){
+  goto('loading');
+  const t = await loadTest(id);
+  if(!t){ alert('این آزمون پیدا نشد 😕'); goHome(); return; }
+  CUR_TEST=t;
+  answers = t.sections.map(s=>new Array(s.items.length).fill(null));
+  document.getElementById('dTitle').textContent = 'قبل از شروع «'+t.title+'» 🧭';
+  document.getElementById('dText').textContent = t.disclaimer;
+  document.getElementById('dIcon').textContent = t.icon;
+  goto('disclaimer');
+}
+function totalQuestions(){ return CUR_TEST.sections.reduce((a,s)=>a+s.items.length,0); }
+function answeredSoFar(){ let n=0; answers.forEach(sec=>sec.forEach(v=>{if(v!==null)n++;})); return n; }
+
+function goto(id){
+  document.querySelectorAll('.screen').forEach(el=>el.classList.add('hidden'));
+  document.getElementById('screen-'+id).classList.remove('hidden');
+  document.getElementById('progressWrap').classList.toggle('show', id==='question');
+  document.getElementById('qCount').classList.toggle('show', id==='question');
+  document.getElementById('navlinks').style.display = (id==='question')? 'none':'flex';
+}
+function startSection(idx){
+  curSection=idx; curQ=0;
+  const s=CUR_TEST.sections[idx];
+  document.getElementById('siIcon').textContent=s.icon||'📝';
+  document.getElementById('siIcon').style.background = idx%2? '#EAF6F4':'#FDF3E3';
+  document.getElementById('siTitle').textContent=s.title;
+  document.getElementById('siText').textContent=s.intro;
+  document.getElementById('siBtn').onclick=()=>{ goto('question'); renderQuestion(); };
+  goto('sectionIntro');
+}
+function renderQuestion(){
+  clearTimeout(advanceTimer);
+  const s=CUR_TEST.sections[curSection];
+  const item=s.items[curQ];
+  document.getElementById('qIndex').textContent=s.title;
+  document.getElementById('qText').textContent=item.text;
+  const labels=labelsFor(s);
+  const wrap=document.getElementById('qOptions'); wrap.innerHTML='';
+  labels.forEach((label,i)=>{
+    const val=labels.length-1-i;
+    const div=document.createElement('div');
+    div.className='opt'+(answers[curSection][curQ]===val?' sel':'');
+    div.innerHTML=`<span>${label}</span><span class="dot"></span>`;
+    div.onclick=()=>{
+      answers[curSection][curQ]=val; renderQuestion(); updateNextBtn(); updateProgress();
+      clearTimeout(advanceTimer);
+      advanceTimer=setTimeout(()=>{ nextQuestion(); },420);
+    };
+    wrap.appendChild(div);
+  });
+  document.getElementById('btnPrev').style.visibility=(curSection===0&&curQ===0)?'hidden':'visible';
+  updateNextBtn(); updateProgress();
+}
+function updateNextBtn(){
+  const answered=answers[curSection][curQ]!==null;
+  const btn=document.getElementById('btnNext'); btn.disabled=!answered;
+  const isLast = curSection===CUR_TEST.sections.length-1 && curQ===CUR_TEST.sections[curSection].items.length-1;
+  btn.textContent = isLast? 'پایان بخش ►':'بعدی ►';
+}
+function updateProgress(){
+  const done=answeredSoFar(), tot=totalQuestions();
+  document.getElementById('progressBar').style.width=(done/tot*100)+'%';
+  document.getElementById('qCount').textContent=toFa(done)+' / '+toFa(tot);
+  updateNeedle();
+}
+function toFa(n){ return String(n).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]); }
+function nextQuestion(){
+  clearTimeout(advanceTimer);
+  const s=CUR_TEST.sections[curSection];
+  if(curQ<s.items.length-1){ curQ++; renderQuestion(); }
+  else if(curSection<CUR_TEST.sections.length-1){ startSection(curSection+1); }
+  else { goto('done'); }
+}
+function prevQuestion(){
+  clearTimeout(advanceTimer);
+  if(curQ>0){ curQ--; renderQuestion(); return; }
+  if(curSection>0){ curSection--; curQ=CUR_TEST.sections[curSection].items.length-1; goto('question'); renderQuestion(); }
+}
+
+/* ================= scoring ================= */
+function computeScores(){
+  const dims = CUR_TEST.dims || {_general:{name:'نمره کلی',icon:'📊',color:'#1F6F6B',angle:0}};
+  const scores={}, maxes={};
+  Object.keys(dims).forEach(k=>{scores[k]=0;maxes[k]=0;});
+  CUR_TEST.sections.forEach((s,si)=>{
+    const labels=labelsFor(s); const maxVal=labels.length-1;
+    s.items.forEach((it,qi)=>{
+      const key = it.tag && dims[it.tag] ? it.tag : Object.keys(dims)[0];
+      maxes[key]+=maxVal;
+      const v=answers[si][qi];
+      if(v!==null) scores[key]+=v;
+    });
+  });
+  return {scores,maxes,dims};
+}
+function updateNeedle(){
+  if(!CUR_TEST || !CUR_TEST.dims) return;
+  const {scores,dims}=computeScores();
+  let sx=0,sy=0,any=false;
+  Object.keys(dims).forEach(k=>{
+    if(dims[k].angle===undefined) return;
+    any=true;
+    const rad=dims[k].angle*Math.PI/180;
+    sx+=Math.cos(rad)*scores[k]; sy+=Math.sin(rad)*scores[k];
+  });
+  if(!any) return;
+  let deg=Math.atan2(sy,sx)*180/Math.PI; if(isNaN(deg)) deg=0;
+  document.getElementById('needle').style.transform=`rotate(${deg}deg)`;
+}
+
+function showResults(){
+  const {scores,maxes,dims}=computeScores();
+  const ranked=Object.keys(dims).map(k=>({key:k,score:scores[k],pct:maxes[k]?Math.round(scores[k]/maxes[k]*100):0}))
+                       .sort((a,b)=>b.score-a.score);
+  const top=ranked[0];
+  const badge=document.getElementById('topBadge');
+  badge.textContent=dims[top.key].icon||'⭐';
+  badge.style.background=(dims[top.key].color||'#1F6F6B')+'22';
+  document.getElementById('topName').textContent='حوزه‌ی غالبت: '+dims[top.key].name+' '+(dims[top.key].icon||'');
+
+  const barsWrap=document.getElementById('barsWrap'); barsWrap.innerHTML='';
+  ranked.forEach(r=>{
+    const row=document.createElement('div'); row.className='bar-row';
+    row.innerHTML=`<div class="bar-label"><span>${dims[r.key].icon||'⭐'}</span> ${dims[r.key].name}</div>
+      <div class="bar-track"><div class="bar-fill" style="background:${dims[r.key].color||'#1F6F6B'}"></div></div>
+      <div class="bar-pct mono">${toFa(r.pct)}٪</div>`;
+    barsWrap.appendChild(row);
+  });
+  goto('results');
+  setTimeout(()=>{
+    document.querySelectorAll('.bar-fill').forEach((el,i)=>{ el.style.width=ranked[i].pct+'%'; });
+    if(dims[top.key].angle!==undefined) document.getElementById('needle').style.transform=`rotate(${dims[top.key].angle}deg)`;
+  },80);
+
+  const tb=document.getElementById('typeBlocks'); tb.innerHTML='';
+  ranked.forEach(r=>{
+    const d=dims[r.key];
+    const block=document.createElement('div'); block.className='type-block';
+    let extra='';
+    if(CUR_TEST.id==='riasec-default'){
+      const careers=OCCUPATIONS[r.key].slice(0,5).map(c=>c.split('（')[0].split('(')[0].trim());
+      extra=`<div class="career-tags">${careers.map(c=>`<span class="career-tag">${c}</span>`).join('')}</div>`;
+    }
+    block.innerHTML=`<h4><span>${d.icon||'⭐'}</span> ${d.name} — ${toFa(r.pct)}٪</h4>
+      <p>${d.desc||('نمره‌ی تو تو این حوزه '+toFa(r.pct)+'٪ شد؛ یعنی '+ (r.pct>60?'خیلی به سمت این حوزه متمایلی 🔥':r.pct>35?'یه‌کم به این حوزه گرایش داری 🙂':'زیاد سمت این حوزه نیستی 😌'))}</p>${extra}`;
+    tb.appendChild(block);
+  });
+  window._resultData={ranked,top,dims};
+}
+
+/* premium unlock */
+function showToast(id,msg,ok){ const t=document.getElementById(id); t.textContent=msg; t.className='toast show '+(ok?'ok':'err'); }
+function unlockPremium(){
+  document.getElementById('premiumBody').classList.add('show');
+  document.getElementById('lockPanel').style.opacity='.55';
+  document.getElementById('lockPanel').style.pointerEvents='none';
+}
+function applyCode(){
+  const val=document.getElementById('codeInput').value.trim().toLowerCase();
+  if(val==='alifaser'){ showToast('codeToast','کد فعال شد، گزارش پیشرفته باز شد ✅🎉',true); unlockPremium(); }
+  else showToast('codeToast','این کد معتبر نیست 🤔',false);
+}
+function fakePurchase(){
+  showToast('codeToast','پرداخت آزمایشی انجام شد (این دکمه فقط نمایشیه، درگاه واقعی نداره) ✅',true);
+  unlockPremium();
+}
+function downloadPdf(){
+  const {ranked,dims}=window._resultData;
+  const printArea=document.getElementById('printArea');
+  let html=`<div style="font-family:'Vazirmatn',sans-serif;direction:rtl;padding:40px;color:#1B2333">
+    <h1 style="margin-bottom:4px">گزارش ${CUR_TEST.title}</h1>
+    <p style="color:#6B7280;margin-top:0">حوزه‌ی غالب: ${dims[ranked[0].key].name} ${dims[ranked[0].key].icon||''}</p><hr>`;
+  ranked.forEach(r=>{
+    html+=`<div style="margin:18px 0"><h3>${dims[r.key].icon||''} ${dims[r.key].name} — ${toFa(r.pct)}٪</h3>
+      <p style="color:#444;line-height:1.9">${dims[r.key].desc||''}</p></div>`;
+  });
+  html+=`<p style="color:#999;font-size:12px;margin-top:40px">تولید شده توسط قطب‌نما</p></div>`;
+  printArea.innerHTML=html; printArea.style.display='block';
+  document.querySelectorAll('body > *:not(#printArea)').forEach(el=>el.style.display='none');
+  window.print();
+  setTimeout(()=>{ printArea.style.display='none';
+    document.querySelectorAll('body > *:not(#printArea)').forEach(el=>el.style.display=''); },500);
+}
+
+/* ================= admin builder ================= */
+let sectionCount=0;
+function openAdmin(){
+  document.getElementById('sectionsWrap').innerHTML='';
+  sectionCount=0; addSectionBlock();
+  goto('admin');
+}
+function addSectionBlock(){
+  sectionCount++;
+  const id='sec'+sectionCount;
+  const div=document.createElement('div'); div.className='section-block'; div.id=id;
+  div.innerHTML=`
+    <div class="sb-head"><b>بخش ${toFa(sectionCount)}</b><button class="btn btn-ghost btn-sm" onclick="document.getElementById('${id}').remove()">حذف بخش</button></div>
+    <div class="form-group"><label>عنوان بخش</label><input class="s-title" placeholder="مثلاً: بخش ۱ — مشاغل"></div>
+    <div class="form-group"><label>توضیح قبل از این بخش</label><textarea class="s-intro" style="min-height:60px" placeholder="توضیحی که قبل از این بخش نمایش داده می‌شه"></textarea></div>
+    <div class="form-group"><label>نوع مقیاس پاسخ</label>
+      <select class="s-scale" onchange="toggleCustomLabels('${id}')">
+        <option value="interest5">علاقه ۵ گزینه‌ای (خیلی دوست دارم ... اصلاً دوست ندارم)</option>
+        <option value="agree5">موافقت ۵ گزینه‌ای (کاملاً موافقم ... کاملاً مخالفم)</option>
+        <option value="yesno">بله / خیر</option>
+        <option value="custom">گزینه‌های سفارشی</option>
+      </select>
+    </div>
+    <div class="form-group s-customwrap hidden"><label>گزینه‌های سفارشی (با کاما جدا کن، از قوی‌ترین به ضعیف‌ترین)</label><input class="s-customlabels" placeholder="مثلاً: همیشه, بیشتر وقت‌ها, بعضی وقت‌ها, به‌ندرت, هیچ‌وقت"></div>
+    <div class="form-group"><label>سؤال‌ها (هر خط یک سؤال)</label>
+      <textarea class="s-items" placeholder="هر خط = یک سؤال. برای دسته‌بندی امتیاز می‌تونی از فرمت «برچسب: متن سؤال» استفاده کنی، مثلاً: R: تعمیر وسایل خونه"></textarea>
+      <div class="hint">این متن‌ها همون چیزیه که خودت وارد می‌کنی — ما محتوایی اضافه یا تغییر نمی‌دیم.</div>
+    </div>`;
+  document.getElementById('sectionsWrap').appendChild(div);
+}
+function toggleCustomLabels(id){
+  const el=document.getElementById(id);
+  const scale=el.querySelector('.s-scale').value;
+  el.querySelector('.s-customwrap').classList.toggle('hidden', scale!=='custom');
+}
+async function saveNewTest(){
+  const title=document.getElementById('af-title').value.trim();
+  const icon=document.getElementById('af-icon').value.trim()||'📝';
+  const category=document.getElementById('af-cat').value.trim()||'دسته‌بندی‌نشده';
+  const desc=document.getElementById('af-desc').value.trim();
+  const disclaimer=document.getElementById('af-disclaimer').value.trim();
+  if(!title){ showToast('adminToast','عنوان آزمون رو وارد کن 🙏',false); return; }
+  const blocks=[...document.querySelectorAll('.section-block')];
+  if(!blocks.length){ showToast('adminToast','حداقل یه بخش لازمه 🙏',false); return; }
+  const sections=[]; const tagsUsed=new Set(); let anyTag=false;
+  for(const b of blocks){
+    const stitle=b.querySelector('.s-title').value.trim()||'بخش بدون عنوان';
+    const sintro=b.querySelector('.s-intro').value.trim();
+    const scaleType=b.querySelector('.s-scale').value;
+    const customLabels=scaleType==='custom'? b.querySelector('.s-customlabels').value.split(',').map(x=>x.trim()).filter(Boolean):null;
+    const rawLines=b.querySelector('.s-items').value.split('\n').map(l=>l.trim()).filter(Boolean);
+    const items=rawLines.map(line=>{
+      const m=line.match(/^([^:：]{1,20})[:：](.+)$/);
+      if(m){ anyTag=true; const tag=m[1].trim(); tagsUsed.add(tag); return {tag,text:m[2].trim()}; }
+      return {tag:null,text:line};
+    });
+    if(!items.length) continue;
+    sections.push({title:stitle,icon:'📝',intro:sintro,scaleType,customLabels,items});
+  }
+  if(!sections.length){ showToast('adminToast','حداقل یه سؤال وارد کن 🙏',false); return; }
+
+  let dims;
+  if(anyTag){
+    dims={}; let i=0;
+    tagsUsed.forEach(tag=>{ dims[tag]={name:tag,icon:'⭐',color:PALETTE[i%PALETTE.length]}; i++; });
+    sections.forEach(s=>s.items.forEach(it=>{ if(!it.tag){ if(!dims._general) dims._general={name:'عمومی',icon:'📊',color:'#5B6472'}; it.tag='_general'; } }));
+  } else {
+    dims={_general:{name:'نمره کلی',icon:'📊',color:'#1F6F6B'}};
+  }
+
+  const id='t-'+Date.now();
+  const count=sections.reduce((a,s)=>a+s.items.length,0);
+  const test={id,title,icon,category,desc,disclaimer:disclaimer||'قبل از شروع: صادقانه و بر اساس اولین حس‌ت جواب بده 🙂',dims,sections};
+  await saveTest(test);
+  TEST_INDEX.push({id,title,icon,category,desc,count});
+  await saveIndex(TEST_INDEX);
+  showToast('adminToast','آزمون با موفقیت ذخیره شد 🎉 داره می‌ره به صفحه‌ی اصلی...',true);
+  setTimeout(goHome,900);
+}
+
+/* ================= boot ================= */
+initHome();
+</script>
+</body>
+</html>
